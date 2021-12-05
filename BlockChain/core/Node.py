@@ -5,10 +5,9 @@ from core.Error import *
 
 class Node(object):
 
-    def __init__(self, address, block_chain):
+    #只负责本地持久化，运行时临时数据都保存在chain里，结束后统一通过node写入
+    def __init__(self, address):
 
-        self.block_chain = block_chain
-        self.block_chain  = load_block_inf()
         #校验地址合法性
         if re.match(r'^[a-zA-Z]:(((\\(?! )[^/:*?<>\""|\\]+)+\\?)|(\\)?)\s*$', address):
             self.data_address = address
@@ -25,29 +24,20 @@ class Node(object):
             ).encode("utf8")
 
         return sha256(block_inf).hexdigest()
+    
+    def load_block_inf():
 
-    def verification():
-        #检验完整性
+        #读取后传给chain
+        #文件存在或权限问题(IOerror)可能被抛出
+        with open('rb', self.data_address) as f:
+            block_chain = f.read()
+            return pickle.loads(block_chain)
 
-        pre_hash = True    
-        #顶部的块没有前一个块，不存在不连续链的可能性
-
-        for block in self.block_chain:
-            hash_current = calculateHash(
-                        block['nonce'],
-                        block['time stamp'],
-                        block['block data'],
-                        block['previous hash']) 
-
-            if hash_current != block['hash']:
-                #检验块hash
-                raise HashCheckError()
-
-            elif hash_current != pre_hash:
-                #校验块hash与上一个块记录的哈希，检查链是否连续
-                raise FalseChainError()
-            
-            pre_hash = block['previous hash']
+    def save_block(self, block):
+        
+        #进程结束后由chain返回最后链
+        with open(address, 'wb'):
+                pickle.dumps(self.block_chain)
  
     def broadcast():
         #向网络广播信息
@@ -57,3 +47,6 @@ class Node(object):
         #从其他节点上获取链
         pass
 
+    def mine():
+
+        pass
