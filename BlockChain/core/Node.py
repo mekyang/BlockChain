@@ -38,7 +38,7 @@ class Node(object):
         #进程结束后由chain返回最后链
         with open(address, 'wb'):
                 pickle.dumps(self.block_chain)
- 
+
     def broadcast():
         #向网络广播信息
         pass
