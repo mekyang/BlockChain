@@ -33,6 +33,12 @@
     <Compile Include="core\wallet.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="config.ini">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="terminal.py">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="core\" />

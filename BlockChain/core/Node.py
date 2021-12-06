@@ -14,17 +14,6 @@ class Node(object):
         else:
             raise AddressError(address)
 
-    def calculateHash(self, nonce, time_stamp, block_data, pre_block):
-
-        block_inf = (
-            pre_block       + 
-            str(time_stamp) + 
-            block_data      +
-            str(nonce)
-            ).encode("utf8")
-
-        return sha256(block_inf).hexdigest()
-    
     def load_block_inf():
 
         #读取后传给chain
@@ -45,8 +34,4 @@ class Node(object):
 
     def get_chain_from_other(self):
         #从其他节点上获取链
-        pass
-
-    def mine():
-
         pass

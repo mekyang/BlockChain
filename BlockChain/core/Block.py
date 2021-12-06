@@ -16,7 +16,7 @@ class Block(object):
 
         return ''
 
-    def __init__(self, pre_hash, bk_data, pre_block, version):
+    def __init__(self, pre_hash, bk_data, version):
 
         self.version     = version
         self.nonce       = 0

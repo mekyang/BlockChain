@@ -6,6 +6,10 @@ class Chain(object):
         #通过node读取后传入
         self.block_chain = block_chain
 
+    def get_previous_hash(self):
+
+        return self.block_chain[-1]['previous hash']
+
     def append_block(self, block):
 
         self.block_chain.append(block)
@@ -33,6 +37,17 @@ class Chain(object):
             
             pre_hash = block['previous hash']
 
+    def calculateHash(self, nonce, time_stamp, block_data, pre_block):
+
+        block_inf = (
+            pre_block       + 
+            str(time_stamp) + 
+            block_data      +
+            str(nonce)
+            ).encode("utf8")
+
+        return sha256(block_inf).hexdigest()
+    
     def UTXO(self):
         #临时的UTXO信息
 
@@ -41,7 +56,7 @@ class Chain(object):
     def return_chain_status(self):
 
         #退出时把所有的更新状态返回给node写入本地
-        pass
+        return (self.block_chain, 0) #0占位utxo
 
 
 

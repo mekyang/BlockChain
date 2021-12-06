@@ -4,15 +4,15 @@ class AddressError(Exception):
         self.address = address
 
     def __str__(self):
-        return f'{self.address}不是合法的地址'
+        return f' AddressError:{self.address}不是合法的地址'
 
 class HashCheckError(Exception):
 
     def __str__(self):
-        return '块哈希不匹配'   
+        return 'HashCheckError:块哈希不匹配'   
 
 class FalseChainError(Exception):
 
     def __str__(self):
-        return '链无法连接'
+        return 'FalseChainError:链无法连接'
 
