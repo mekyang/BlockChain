@@ -13,10 +13,11 @@ config.read(path)
 #以下是帮助信息（当new为true时运行则会直接弹出帮助）
 help_config = 0
 help = 0
+new = eval(config['select']['new'])
 
 def set_config():
     #对ini的操作
-    if config['select']['new']:
+    if new:
         print(help_config)
     config['select']['new'] = 'False'
     while True:
@@ -28,7 +29,8 @@ def set_config():
             return
         elif '=' in command:
             try:
-                eval(f"config['select']['{command.split()[0]}']=command.split()[1]")
+                config.set('select', command.split('=')[0], command.split('=')[1].replace('\\', '/'))
+                config.write(open(path, 'r+', encoding='utf-8'))
             except:
                 print('错误指令')
         else:
@@ -37,21 +39,21 @@ def set_config():
             except:
                 print('错误指令')
 
-def load():
-    #加载整个系统
-    global node
-    global chain
+#def load():
+#    #加载整个系统
+#    global node
+#    global chain
 
-    if not config['select']['new']:
-        set_config()
+#    if not config['select']['new']:
+#        set_config()
 
-    try:
-        node  = Node(config['select']['address'])
-        chain = Chain(node.load_block_inf())
-    except AddressError:
-        return AddressError
-    except OSError:
-        return '文件不存在或无权访问'
+#    try:
+#        node  = Node(config['select']['address'])
+#        chain = Chain(node.load_block_inf())
+#    except AddressError:
+#        return AddressError
+#    except OSError:
+#        return '文件不存在或无权访问'
 
 def not_find():
 
@@ -81,10 +83,13 @@ def _quit():
 
     print('*************************************GOODBEY*************************************')
 
+new = eval(config['select']['new'])
+address = config['select']['address']
+
 while True:
     #预开启，可以进行设置,查看介绍和开始加载
-    if config['select']['new']:
-        print(help)
+    if new:
+        
         print('请先完善设置')
         set_config()
         print('正在生成数据容器......')
@@ -98,9 +103,16 @@ while True:
         set_config()
 
     elif command == 'start':
-        load()
+        try:
+            node  = Node(config['select']['address'])
+            chain = Chain(node.load_block_inf())
+        except AddressError:
+            print(AddressError(address))
+        except OSError:
+            print('文件不存在或无权访问')
+        except ReadDataError:
+            print(ReadDataError())
         print('****************************************START*******************************************')
-        break
 
     else:
         print('未知命令')

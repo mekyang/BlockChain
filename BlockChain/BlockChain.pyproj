@@ -33,15 +33,12 @@
     <Compile Include="core\wallet.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="config.ini">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="terminal.py">
-      <SubType>Code</SubType>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="core\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="config.ini" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in

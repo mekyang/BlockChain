@@ -1,5 +1,6 @@
 import pickle
 import re
+from os.path import getsize
 from core.Error import *
 
 
@@ -9,18 +10,25 @@ class Node(object):
     def __init__(self, address):
 
         #校验地址合法性
-        if re.match(r'^[a-zA-Z]:(((\\(?! )[^/:*?<>\""|\\]+)+\\?)|(\\)?)\s*$', address):
+        if re.match(r'^[a-zA-Z]:(((/(?! )[^/:*?<>\""|/]+)+/?)|(/)?)\s*$', address):
             self.data_address = address
         else:
             raise AddressError(address)
 
-    def load_block_inf():
+    def load_block_inf(self):
 
         #读取后传给chain
         #文件存在或权限问题(IOerror)可能被抛出
-        with open('rb', self.data_address) as f:
-            block_chain = f.read()
-            return pickle.loads(block_chain)
+        #判断文件中有无内容
+        if getsize(self.data_address) != 0:
+            try:
+                with open(self.data_address, 'rb') as f:
+                    block_chain = f.read()
+                    return pickle.loads(block_chain)
+            except:
+                raise ReadDataError
+        else:
+            return {}
 
     def save_block(self, block):
         
