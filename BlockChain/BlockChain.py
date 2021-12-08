@@ -39,22 +39,6 @@ def set_config():
             except:
                 print('错误指令')
 
-#def load():
-#    #加载整个系统
-#    global node
-#    global chain
-
-#    if not config['select']['new']:
-#        set_config()
-
-#    try:
-#        node  = Node(config['select']['address'])
-#        chain = Chain(node.load_block_inf())
-#    except AddressError:
-#        return AddressError
-#    except OSError:
-#        return '文件不存在或无权访问'
-
 def not_find():
 
     print('未知命令')
@@ -102,6 +86,7 @@ while True:
     if command == 'config':
         set_config()
 
+    #加载
     elif command == 'start':
         try:
             node  = Node(config['select']['address'])
