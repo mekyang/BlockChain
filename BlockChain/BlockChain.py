@@ -114,6 +114,6 @@ while True:
     command = input('>')
     instrucion_set.get(command, not_find)()
 
-
+1
 
 
