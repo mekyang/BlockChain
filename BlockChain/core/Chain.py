@@ -8,7 +8,7 @@ class Chain(object):
 
     def get_previous_hash(self):
 
-        return self.block_chain[-1]['previous hash']
+        return self.block_chain[-1]['hash']
 
     def append_block(self, block):
 

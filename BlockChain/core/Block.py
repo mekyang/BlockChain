@@ -52,7 +52,7 @@ class Block(object):
 
         return sha256(block_inf).hexdigest()
 
-    def mine(self, difficulty = 5):
+    def mine(self, difficulty = 3):
 
         target = '0' * difficulty
 

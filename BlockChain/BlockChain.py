@@ -11,9 +11,17 @@ config = configparser.ConfigParser()
 path = 'config.ini'
 config.read(path)
 #以下是帮助信息（当new为true时运行则会直接弹出帮助）
+version = config['select']['version']
 help_config = 0
 help = 0
 new = eval(config['select']['new'])
+abnormal = 0
+#检测是否非正常退出，若非正常退出，则下次检测是abnormal为1
+if int(config['select']['abnormal']):
+    abnormal = 1
+#正常退出quit中会更改
+config.set('select', 'abnormal', '1')
+config.write(open(path, 'r+', encoding='utf-8'))
 
 def set_config():
     #对ini的操作
@@ -29,6 +37,8 @@ def set_config():
             return
         elif '=' in command:
             try:
+                #去掉空格，防止ini中二次写入
+                command = command.replace(' ', '')
                 config.set('select', command.split('=')[0], command.split('=')[1].replace('\\', '/'))
                 config.write(open(path, 'r+', encoding='utf-8'))
             except:
@@ -49,6 +59,8 @@ def _help():
 
 def _transaction():
 
+    data = input('T(data):')
+
     previous = chain.get_previous_hash()
     block = Block(previous, data, version)
     block.mine()
@@ -61,10 +73,12 @@ def _quit():
 
     block_chain = chain.return_chain_status()
     try:
-        node.save_block()
+        node.save_block(chain.block_chain)
     except OSError:
         return '文件不存在或无权访问'
-
+    #设置正常退出标志
+    config.set('select', 'abnormal', '0')
+    config.write(open(path, 'r+', encoding='utf-8'))
     print('*************************************GOODBEY*************************************')
 
 new = eval(config['select']['new'])
@@ -98,6 +112,16 @@ while True:
         except ReadDataError:
             print(ReadDataError())
         print('****************************************START*******************************************')
+        #生成创世块
+        if not chain.block_chain:
+            block = Block('0', 'FIRST', version)
+            block.mine()
+            print(block)
+            print('创世块已经生成')
+            block = block.save_as_dic()
+            chain.append_block(block)
+
+        break
 
     else:
         print('未知命令')
@@ -105,15 +129,11 @@ while True:
 #命令集，用以快速执行命令
 instrucion_set = {
     'tran' : _transaction,
-    'quit' : _quit(),
-    'help' : _help()
+    'quit' : _quit,
+    'help' : _help
     }
 
 while True:
   
     command = input('>')
     instrucion_set.get(command, not_find)()
-
-1
-
-
