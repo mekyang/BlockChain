@@ -33,8 +33,8 @@ class Node(object):
     def save_block(self, block_chain):
         
         #进程结束后由chain返回最后链
-        with open(self.data_address, 'wb'):
-                pickle.dumps(block_chain)
+        with open(self.data_address, 'wb') as bc:
+                pickle.dump(block_chain, bc)
 
     def broadcast():
         #向网络广播信息

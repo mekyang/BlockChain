@@ -1,24 +1,44 @@
 from hashlib import sha256
 from time import time, asctime, localtime
 
+block_inf = '''
+        ----------------------Block Information------------------------------------------------------
+        bloackchain version:    {}
+        block ID:               {}  
+        block calculated time:  {}
+        previous block hash:    {}
+        block data:             {}
+        block hash:             {}
+        nonce:                  {}
+        ---------------------------------------------------------------------------------------------
+        '''
+
 class Block(object):
 
     def __str__(self):
 
-        print('----------------------Block Information------------------------------------------------------')
-        print('bloackchain version:    v1.0.0')
-        print(f'block calculated time:  {self.time_format}')
-        print(f'previous block hash:    {self.previous}') 
-        print(f'block data:             {self.block_data}')
-        print(f'block hash:             {self.block_hash}')
-        print(f'nonce:                  {self.nonce}')
-        print('---------------------------------------------------------------------------------------------')
+        #print('----------------------Block Information------------------------------------------------------')
+        #print('bloackchain version:     {self.version')
+        #print('block ID:                {self.block_ID}  ')
+        #print(f'block calculated time:  {self.time_format}')
+        #print(f'previous block hash:    {self.previous}') 
+        #print(f'block data:             {self.block_data}')
+        #print(f'block hash:             {self.block_hash}')
+        #print(f'nonce:                  {self.nonce}')
+        #print('---------------------------------------------------------------------------------------------')
 
-        return ''
+        return block_inf.format(self.version,
+                                self.block_ID,
+                                self.time_format,
+                                self.previous,
+                                self.block_data,
+                                self.block_hash,
+                                self.nonce)
 
-    def __init__(self, pre_hash, bk_data, version):
+    def __init__(self, pre_hash, bk_data, version, block_ID):
 
         self.version     = version
+        self.block_ID    = int(block_ID)
         self.nonce       = 0
         self.previous    = pre_hash
         self.block_data  = bk_data
@@ -32,6 +52,7 @@ class Block(object):
         block_dic = {
             'hash'          : self.block_hash,
             'block version' : self.version,
+            'block ID'      : self.block_ID,
             'nonce'         : self.nonce,
             'previous hash' : self.previous,
             'block data'    : self.block_data,

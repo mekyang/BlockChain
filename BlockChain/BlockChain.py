@@ -1,4 +1,4 @@
-from core.Block import Block
+from core.Block import Block, block_inf
 from core.Chain import Chain
 from core.Node import Node
 from core.Error import *
@@ -41,6 +41,11 @@ def set_config():
                 command = command.replace(' ', '')
                 config.set('select', command.split('=')[0], command.split('=')[1].replace('\\', '/'))
                 config.write(open(path, 'r+', encoding='utf-8'))
+                if 'address' in command:
+                    print('正在生成数据容器......')
+                    f = open(config['select']['address'], 'wb')
+                    f.close()
+                    print('完毕')
             except:
                 print('错误指令')
         else:
@@ -62,24 +67,46 @@ def _transaction():
     data = input('T(data):')
 
     previous = chain.get_previous_hash()
-    block = Block(previous, data, version)
+    block_ID = chain.get_block_ID()
+    block = Block(previous, data, version, block_ID)
     block.mine()
     print(block)
     block = block.save_as_dic()
     chain.append_block(block)
     print('---FINISH---')
 
+def _queryheight():
+
+    print(f'block height : {len(chain.block_chain)}')
+
+def _queryblock():
+
+    block_ID = input('Q:')
+    blocks = eval(f'chain.block_chain[{block_ID}]')
+    if isinstance(blocks, dict):
+        blocks = [blocks]
+    for block in blocks:
+        print(block_inf.format(block['block version'],
+                               block['block ID'],
+                               block['time'],
+                               block['previous hash'],
+                               block['block data'],
+                               block['hash'],
+                               block['nonce']))
+
 def _quit():
 
     block_chain = chain.return_chain_status()
     try:
         node.save_block(chain.block_chain)
+        print(1)
     except OSError:
-        return '文件不存在或无权访问'
+        print('文件不存在或无权访问')
     #设置正常退出标志
     config.set('select', 'abnormal', '0')
     config.write(open(path, 'r+', encoding='utf-8'))
     print('*************************************GOODBEY*************************************')
+    exit(0)
 
 new = eval(config['select']['new'])
 address = config['select']['address']
@@ -90,10 +117,6 @@ while True:
         
         print('请先完善设置')
         set_config()
-        print('正在生成数据容器......')
-        f = open(config['select']['address'], 'wb')
-        f.close()
-        print('完毕')
 
     command = input('P:')
 
@@ -114,7 +137,7 @@ while True:
         print('****************************************START*******************************************')
         #生成创世块
         if not chain.block_chain:
-            block = Block('0', 'FIRST', version)
+            block = Block('0', 'FIRST', version, '0')
             block.mine()
             print(block)
             print('创世块已经生成')
@@ -128,9 +151,11 @@ while True:
 
 #命令集，用以快速执行命令
 instrucion_set = {
-    'tran' : _transaction,
-    'quit' : _quit,
-    'help' : _help
+    'tran'   : _transaction,
+    'quit'   : _quit,
+    'help'   : _help,
+    'height' : _queryheight,
+    'query'  : _queryblock
     }
 
 while True:

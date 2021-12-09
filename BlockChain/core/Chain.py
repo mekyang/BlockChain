@@ -4,7 +4,11 @@ class Chain(object):
     def __init__(self, block_chain):
 
         #通过node读取后传入
-        self.block_chain = block_chain
+        self.block_chain  = block_chain
+
+    def get_block_ID(self):
+        #取块的id
+        return int(self.block_chain[-1]['block ID']) + 1
 
     def get_previous_hash(self):
 
