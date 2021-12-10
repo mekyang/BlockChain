@@ -3,6 +3,7 @@ from core.Chain import Chain
 from core.Node import Node
 from core.Error import *
 
+help = 0
 def start(path, _version):
     global chain
     global node

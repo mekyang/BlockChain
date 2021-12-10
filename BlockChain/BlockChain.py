@@ -9,8 +9,14 @@ path = 'config.ini'
 config.read(path)
 #以下是帮助信息（当new为true时运行则会直接弹出帮助）
 version = config['select']['version']
-help_config = 0
-help = 0
+help_config = '''
+输入设置名称以显示该设置值
+设置名称=值 以更改设置
+finish结束设置
+
+请输入address=xx以设置存储地址
+'''
+
 new = eval(config['select']['new'])
 ABNORMAL = 0
 #检测是否非正常退出，若非正常退出，则下次检测是abnormal为1
