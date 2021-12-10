@@ -29,6 +29,9 @@
     <Compile Include="core\Error.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="instrucion.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="core\Node.py" />
     <Compile Include="core\wallet.py">
       <SubType>Code</SubType>

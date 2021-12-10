@@ -17,16 +17,6 @@ class Block(object):
 
     def __str__(self):
 
-        #print('----------------------Block Information------------------------------------------------------')
-        #print('bloackchain version:     {self.version')
-        #print('block ID:                {self.block_ID}  ')
-        #print(f'block calculated time:  {self.time_format}')
-        #print(f'previous block hash:    {self.previous}') 
-        #print(f'block data:             {self.block_data}')
-        #print(f'block hash:             {self.block_hash}')
-        #print(f'nonce:                  {self.nonce}')
-        #print('---------------------------------------------------------------------------------------------')
-
         return block_inf.format(self.version,
                                 self.block_ID,
                                 self.time_format,
