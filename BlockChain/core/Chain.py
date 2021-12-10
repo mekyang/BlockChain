@@ -1,3 +1,17 @@
+from hashlib import sha256
+from core.Error import *
+
+def calculateHash(previous, timestamp, data, nonce):
+
+        block_inf = (
+            previous       + 
+            str(timestamp) + 
+            data           +
+            str(nonce)
+            ).encode("utf8")
+
+        return sha256(block_inf).hexdigest()
+
 class Chain(object):
     #只处理链相关的问题
 
@@ -17,19 +31,19 @@ class Chain(object):
     def append_block(self, block):
 
         self.block_chain.append(block)
-
-    def verification():
+    
+    def verification(self):
         #检验本地链的完整性
 
-        pre_hash = True    
+        pre_hash = self.block_chain[-1]['hash']
         #顶部的块没有前一个块，不存在不连续链的可能性
 
-        for block in self.block_chain:
+        for block in self.block_chain[::-1]:
             hash_current = calculateHash(
-                        block['nonce'],
+                        block['previous hash'],
                         block['time stamp'],
                         block['block data'],
-                        block['previous hash']) 
+                        block['nonce']) 
 
             if hash_current != block['hash']:
                 #检验块hash
@@ -41,16 +55,7 @@ class Chain(object):
             
             pre_hash = block['previous hash']
 
-    def calculateHash(self, nonce, time_stamp, block_data, pre_block):
-
-        block_inf = (
-            pre_block       + 
-            str(time_stamp) + 
-            block_data      +
-            str(nonce)
-            ).encode("utf8")
-
-        return sha256(block_inf).hexdigest()
+        print('块校验通过')
     
     def UTXO(self):
         #临时的UTXO信息

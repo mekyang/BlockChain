@@ -3,25 +3,30 @@ from core.Chain import Chain
 from core.Node import Node
 from core.Error import *
 
-def start(path, version):
-        try:
-            node  = Node(path)
-            chain = Chain(node.load_block_inf())
-        except AddressError:
-            print(AddressError(path))
-        except OSError:
-            print('文件不存在或无权访问')
-        except ReadDataError:
-            print(ReadDataError())
+def start(path, _version):
+    global chain
+    global node
+    global version
+    version = _version
+
+    try:
+        node  = Node(path)
+        chain = Chain(node.load_block_inf())
+    except AddressError:
+        print(AddressError(path))
+    except OSError:
+        print('文件不存在或无权访问')
+    except ReadDataError:
+        print(ReadDataError())
         print('****************************************START*******************************************')
-        #生成创世块
-        if not chain.block_chain:
-            block = Block('0', 'FIRST', version, '0')
-            block.mine()
-            print(block)
-            print('创世块已经生成')
-            block = block.save_as_dic()
-            chain.append_block(block)
+    #生成创世块
+    if not chain.block_chain:
+        block = Block('0', 'FIRST', _version, '0')
+        block.mine()
+        print(block)
+        print('创世块已经生成')
+        block = block.save_as_dic()
+        chain.append_block(block)
 
 def not_find():
 
