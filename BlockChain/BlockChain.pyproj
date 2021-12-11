@@ -26,6 +26,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="core\Chain.py" />
+    <Compile Include="core\UPnP.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="core\Error.py">
       <SubType>Code</SubType>
     </Compile>

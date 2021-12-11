@@ -3,7 +3,6 @@ import re
 from os.path import getsize
 from core.Error import *
 
-
 class Node(object):
 
     #只负责本地持久化，运行时临时数据都保存在chain里，结束后统一通过node写入
@@ -14,6 +13,7 @@ class Node(object):
             self.data_address = address
         else:
             raise AddressError(address)
+
 
     def load_block_inf(self):
 
