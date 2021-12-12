@@ -26,6 +26,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="core\Chain.py" />
+    <Compile Include="core\Method.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="core\UPnP.py">
       <SubType>Code</SubType>
     </Compile>
@@ -45,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="config.ini" />
+    <Content Include="core\.editorconfig" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in

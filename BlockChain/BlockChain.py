@@ -26,6 +26,8 @@ if int(config['select']['abnormal']):
 config.set('select', 'abnormal', '1')
 config.write(open(path, 'r+', encoding='utf-8'))
 chain_path = config['select']['address']
+chain_file = chain_path + config['select']['chain_file']
+node_file = chain_path + config['select']['node_file']
 
 def set_config():
     #对ini的操作
@@ -47,7 +49,7 @@ def set_config():
                 config.write(open(path, 'r+', encoding='utf-8'))
                 if 'address' in command:
                     print('正在生成数据容器......')
-                    f = open(config['select']['address'], 'wb')
+                    f = open(chain_file, 'wb')
                     f.close()
                     print('完毕')
             except:
@@ -57,9 +59,6 @@ def set_config():
                 print(f"{command}={config['select'][command]}")
             except:
                 print('错误指令')
-
-new = eval(config['select']['new'])
-address = config['select']['address']
 
 while True:
     #预开启，可以进行设置,查看介绍和开始加载
@@ -75,7 +74,7 @@ while True:
 
     #加载
     elif command == 'start':
-        start(chain_path, version)
+        start(chain_path, chain_file, node_file, version)
         break
 
     else:

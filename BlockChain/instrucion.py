@@ -1,18 +1,21 @@
 from core.Block import Block, block_inf
 from core.Chain import Chain
 from core.Node import Node
+from core.UPnP import UPnP
 from core.Error import *
 
 help = 0
-def start(path, _version):
+def start(path, chain_file, node_file, _version):
     global chain
     global node
     global version
     version = _version
 
     try:
-        node  = Node(path)
+        node  = Node(path, chain_file, node_file)
         chain = Chain(node.load_block_inf())
+        upnp  = UPnP()
+        node.node_list = upnp.discovery_node()
     except AddressError:
         print(AddressError(path))
     except OSError:
@@ -74,7 +77,8 @@ def _quit():
     block_chain = chain.return_chain_status()
     try:
         node.save_block(chain.block_chain)
-        print(1)
+        node.save_node_list()
+
     except OSError:
         print('文件不存在或无权访问')
 
