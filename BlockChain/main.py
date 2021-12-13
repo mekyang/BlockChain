@@ -1,5 +1,5 @@
 from core.Block import Block, block_inf
-from core.Chain import Chain
+from core.Chain import *
 from core.Node import Node
 from core.UPnP import UPnP
 from core.Error import *
@@ -9,17 +9,19 @@ help = 0
 def listen(port):
     node.node_listen(upnp.host_ip, port)
 
+#def time_server():
+
 def start(path, chain_file, node_file, _version):
-    global chain
     global node
     global upnp
     global version
+    global block_chain
     version = _version
 
     try:
         node  = Node(path, chain_file, node_file)
-        chain = Chain()
-        node.block_chain = chain.block_chain = node.load_block_inf()
+        node.block_chain = node.load_block_inf()
+        block_chain = node.block_chain
         upnp  = UPnP()
         node.node_list = upnp.discovery_node()
     except AddressError:
@@ -30,13 +32,13 @@ def start(path, chain_file, node_file, _version):
         print(ReadDataError())
         print('****************************************START*******************************************')
     #生成创世块
-    if not chain.block_chain:
+    if not block_chain:
         block = Block('0', 'FIRST', _version, '0')
         block.mine()
         print(block)
         print('创世块已经生成')
         block = block.save_as_dic()
-        chain.append_block(block)
+        append_block(block)
 
 def not_find():
 
@@ -50,23 +52,23 @@ def _transaction():
 
     data = input('T(data):')
 
-    previous = chain.get_previous_hash()
-    block_ID = chain.get_block_ID()
+    previous = get_previous_hash()
+    block_ID = get_block_ID()
     block = Block(previous, data, version, block_ID)
     block.mine()
     print(block)
     block = block.save_as_dic()
-    chain.append_block(block)
+    append_block(block)
     print('---FINISH---')
 
 def _queryheight():
 
-    print(f'block height : {len(chain.block_chain)}')
+    print(f'block height : {len(block_chain)}')
 
 def _queryblock():
 
     block_ID = input('Q:')
-    blocks = eval(f'chain.block_chain[{block_ID}]')
+    blocks = eval(f'block_chain[{block_ID}]')
     if isinstance(blocks, dict):
         blocks = [blocks]
     for block in blocks:
@@ -80,9 +82,9 @@ def _queryblock():
 
 def _quit():
 
-    block_chain = chain.return_chain_status()
+    block_chain = return_chain_status()
     try:
-        node.save_block(chain.block_chain)
+        node.save_block(block_chain)
         node.save_node_list()
 
     except OSError:
@@ -91,7 +93,7 @@ def _quit():
 def _verification():
 
     try:
-        chain.verification()
+        verification()
     except Exception as e:
         print(e)
 

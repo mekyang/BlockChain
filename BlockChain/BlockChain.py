@@ -1,5 +1,5 @@
 import configparser
-from instrucion import *
+from main import *
 import threading
 
 print('********************************************************************************************')
@@ -32,6 +32,10 @@ node_file = chain_path + config['select']['node_file']
 
 def set_config():
     #对ini的操作
+    global chain_path
+    global chain_file
+    global node_file
+
     if new:
         print(help_config)
     config['select']['new'] = 'False'
@@ -48,7 +52,11 @@ def set_config():
                 command = command.replace(' ', '')
                 config.set('select', command.split('=')[0], command.split('=')[1].replace('\\', '/'))
                 config.write(open(path, 'r+', encoding='utf-8'))
-                if 'address' in command:
+                #config更新后重新设置地址，原来的设置是旧地址
+                chain_path = config['select']['address']
+                chain_file = chain_path + config['select']['chain_file']
+                node_file = chain_path + config['select']['node_file']
+                if 'file' in command:
                     print('正在生成数据容器......')
                     f = open(chain_file, 'wb')
                     f.close()
@@ -60,6 +68,7 @@ def set_config():
                 print(f"{command}={config['select'][command]}")
             except:
                 print('错误指令')
+
 
 def main():
 

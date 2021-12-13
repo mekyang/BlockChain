@@ -26,8 +26,11 @@
     <Compile Include="core\Block.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="core\Chain.py" />
+    <Compile Include="core\Chain1.py" />
     <Compile Include="core\Method.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="core\Chain.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="core\UPnP.py">
@@ -36,7 +39,7 @@
     <Compile Include="core\Error.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="instrucion.py">
+    <Compile Include="main.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="core\Node.py" />
