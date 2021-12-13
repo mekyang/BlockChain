@@ -9,6 +9,9 @@ help = 0
 def listen(port):
     node.node_listen(upnp.host_ip, port)
 
+def time_server():
+    pass
+
 def start(path, chain_file, node_file, _version):
     global chain
     global node
@@ -22,7 +25,6 @@ def start(path, chain_file, node_file, _version):
         node.block_chain = chain.block_chain = node.load_block_inf()
         upnp  = UPnP()
         node.node_list = upnp.discovery_node()
-        print(1)
     except AddressError:
         print(AddressError(path))
     except OSError:

@@ -36,7 +36,7 @@
     <Compile Include="core\Error.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="instrucion.py">
+    <Compile Include="main.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="core\Node.py" />

@@ -1,5 +1,5 @@
 import configparser
-from instrucion import *
+from main import *
 import threading
 
 print('********************************************************************************************')
@@ -48,6 +48,10 @@ def set_config():
                 command = command.replace(' ', '')
                 config.set('select', command.split('=')[0], command.split('=')[1].replace('\\', '/'))
                 config.write(open(path, 'r+', encoding='utf-8'))
+                #更改完成后刷新
+                chain_path = config['select']['address']
+                chain_file = chain_path + config['select']['chain_file']
+                node_file = chain_path + config['select']['node_file']
                 if 'address' in command:
                     print('正在生成数据容器......')
                     f = open(chain_file, 'wb')
