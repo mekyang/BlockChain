@@ -87,7 +87,9 @@ class Node(object):
     def method_ALIVE(value, body):
         self.node_list.append(value)
 
-    #def method_GETNODE(value, body):
-    #    #body为get则为其他节点请求，为post则为自己向节点发送请求收到的回应
-    #    if body == 'get':
-    #        self.send_inf(f'GETNODE:post;CHAIN:{')
+    def method_GETNODE(value, body):
+        #body为get则为其他节点请求，为post则为自己向节点发送请求收到的回应
+        if body == 'get':
+            self.send_inf(f'GETNODE:post;CHAIN:{self.block_chain}')
+        elif body == 'post':
+            

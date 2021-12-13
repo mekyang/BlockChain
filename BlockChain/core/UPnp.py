@@ -45,12 +45,11 @@ class UPnP(object):
                     s.close()
         
             thread_list.append(threading.Thread(target=run, args=(port,)))
-            for thread in thread_list:
-                thread.start()
-            for thread in thread_list:
-                thread.join()
+        for thread in thread_list:
+            thread.start()
+        for thread in thread_list:
+            thread.join()
 
         print(f'已发现{len(self.node_list)}个节点')
-        print(self.node_list)
         #返回list给node
         return self.node_list
