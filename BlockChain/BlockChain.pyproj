@@ -11,6 +11,7 @@
     <OutputPath>.</OutputPath>
     <Name>BlockChain</Name>
     <RootNamespace>BlockChain</RootNamespace>
+    <TestFramework>Pytest</TestFramework>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -40,6 +41,12 @@
     </Compile>
     <Compile Include="core\Node.py" />
     <Compile Include="core\wallet.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Method Example.txt">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="test_1.py">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>

@@ -1,5 +1,6 @@
 import configparser
 from instrucion import *
+import threading
 
 print('********************************************************************************************')
 
@@ -60,6 +61,19 @@ def set_config():
             except:
                 print('错误指令')
 
+def main():
+
+    while True:
+  
+        command = input('>')
+        instrucion_set.get(command, not_find)()
+        #退出并取消非正常退出标志
+        if command == 'quit':
+            config.set('select', 'abnormal', '0')
+            config.write(open(path, 'r+', encoding='utf-8'))
+            print('*************************************GOODBEY*************************************')
+            exit(0)
+
 while True:
     #预开启，可以进行设置,查看介绍和开始加载
     if new:
@@ -75,18 +89,14 @@ while True:
     #加载
     elif command == 'start':
         start(chain_path, chain_file, node_file, version)
-        break
+
+        port = int(input(":"))
+        listen_thread = threading.Thread(target=listen, args=(port,))
+        main_thread   = threading.Thread(target=main)
+        listen_thread.start()
+        main_thread.start()
+        listen_thread.join()
+        main_thread.join()
 
     else:
         print('未知命令')
-
-while True:
-  
-    command = input('>')
-    instrucion_set.get(command, not_find)()
-    #退出并取消非正常退出标志
-    if command == 'quit':
-        config.set('select', 'abnormal', '0')
-        config.write(open(path, 'r+', encoding='utf-8'))
-        print('*************************************GOODBEY*************************************')
-        exit(0)

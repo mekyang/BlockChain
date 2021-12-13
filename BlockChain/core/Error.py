@@ -19,4 +19,20 @@ class FalseChainError(Exception):
 class ReadDataError(Exception):
 
     def __str__(self):
-        return '读取数据文件时出现问题'
+        return 'ReadDataError:读取数据文件时出现问题'
+
+class CanNotUtilError(Exception):
+
+    def __init__(self, data):
+        self.data = data
+
+    def __str__(self):
+        return f'CanNotUtilError:{self.data}无法处理'
+
+class DisunderstandMethodError(Exception):
+
+    def __init__(self, method):
+        self.method = method
+
+    def __str__(self):
+        return f'DisunderstandMethodError:{self.method}无法识别命令'

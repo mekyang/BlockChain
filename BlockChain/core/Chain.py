@@ -15,10 +15,10 @@ def calculateHash(previous, timestamp, data, nonce):
 class Chain(object):
     #只处理链相关的问题
 
-    def __init__(self, block_chain):
+    def __init__(self):
 
         #通过node读取后传入
-        self.block_chain  = block_chain
+        self.block_chain = []
 
     def get_block_ID(self):
         #取块的id

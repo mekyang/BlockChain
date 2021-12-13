@@ -12,6 +12,7 @@ class Node(object):
 
         #校验地址合法性
         self.node_list = []
+        self.block_chain = []
         if re.match(r'^[a-zA-Z]:(((/(?! )[^/:*?<>\""|/]+)+/?)|(/)?)\s*$', address):
             self.data_address = chain_file
             self.node_address = node_file
@@ -48,22 +49,32 @@ class Node(object):
         with open(self.node_address, 'wb') as bcn:
             pickle.dump(self.node_list, bcn)
     
-    def node_bind(self, host, port):
-
+    def node_listen(self, host, port):
+        #监听并执行
         serve = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        serve.bind((host, bind))
+        serve.bind((host, port))
         serve.listen(5)
 
         while True:
             cs,addr = serve.accept()      
             self.node_list.append(addr[1])
             buffer = []
-            while serve.recv(1024):
-                data = serve.recv(1024)
+            while True:
+                data = cs.recv(1024)
                 buffer.append(data)
-            response = util_method(data)
-            cs.send(response)
-            cs.close()
+                if not data:
+                    break
+            #执行远程命令
+            res = self.util_method(data)
+            eval(f'self.method_{res[0]}({res[1]}, {res[2]}')
+    
+    def send_inf(self, data):
+
+        for s in self.node_list:
+            try:
+                s.send(b'{}'.format(data))
+            finally:
+                s.close()
 
     def broadcast():
         #向网络广播信息
@@ -71,4 +82,12 @@ class Node(object):
 
     def get_chain_from_other(self):
         #从其他节点上获取链
-        pass
+        self.send_inf(f'GETNODE:get;')
+
+    def method_ALIVE(value, body):
+        self.node_list.append(value)
+
+    #def method_GETNODE(value, body):
+    #    #body为get则为其他节点请求，为post则为自己向节点发送请求收到的回应
+    #    if body == 'get':
+    #        self.send_inf(f'GETNODE:post;CHAIN:{')

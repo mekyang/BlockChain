@@ -5,17 +5,24 @@ from core.UPnP import UPnP
 from core.Error import *
 
 help = 0
+
+def listen(port):
+    node.node_listen(upnp.host_ip, port)
+
 def start(path, chain_file, node_file, _version):
     global chain
     global node
+    global upnp
     global version
     version = _version
 
     try:
         node  = Node(path, chain_file, node_file)
-        chain = Chain(node.load_block_inf())
+        chain = Chain()
+        node.block_chain = chain.block_chain = node.load_block_inf()
         upnp  = UPnP()
         node.node_list = upnp.discovery_node()
+        print(1)
     except AddressError:
         print(AddressError(path))
     except OSError:
