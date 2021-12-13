@@ -22,6 +22,7 @@ def start(path, chain_file, node_file, _version):
         node.block_chain = chain.block_chain = node.load_block_inf()
         upnp  = UPnP()
         node.node_list = upnp.discovery_node()
+        print(1)
     except AddressError:
         print(AddressError(path))
     except OSError:
@@ -95,14 +96,6 @@ def _verification():
     except Exception as e:
         print(e)
 
-def _debug():
-
-    while True:
-        debug = input('D:')
-        if debug == 'quit':
-            break
-        eval(debug)
-
 #命令集，用以快速执行命令
 instrucion_set = {
     'tran'   : _transaction,
@@ -110,6 +103,5 @@ instrucion_set = {
     'help'   : _help,
     'height' : _queryheight,
     'query'  : _queryblock,
-    'verf'   : _verification,
-    'debug'  : _debug
+    'verf'   : _verification
     }
