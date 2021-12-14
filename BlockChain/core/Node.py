@@ -77,20 +77,26 @@ class Node(object):
             finally:
                 s.close()
 
-    def broadcast():
+    def broadcast(self, block):
         #向网络广播信息
-        pass
+        self.send_inf(f"MINE:{block['block ID']};BLOCK:{block}")
 
     def get_chain_from_other(self):
         #从其他节点上获取链
         self.send_inf(f'GETNODE:get;')
 
-    def method_ALIVE(value, body):
+    def method_ALIVE(self, value, body):
         self.node_list.append(value)
 
-    def method_GETNODE(value, body):
+    def method_GETNODE(self, value, body):
         #body为get则为其他节点请求，为post则为自己向节点发送请求收到的回应
-        if body == 'get':
+        if value == 'get':
             self.send_inf(f'GETNODE:post;CHAIN:{self.block_chain}')
-        else:
-            
+        elif value == 'post':
+            if Chain.verification(self.block_chain):
+                self.block_chain = body['CHAIN']
+
+    def method_MINE(self, value, body):
+        #加入新区块
+        if value == self.block_chain[-1]['block ID'] + 1:
+            self.block_chain.append(body['BLOCK'])

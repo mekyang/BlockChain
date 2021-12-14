@@ -27,15 +27,16 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="core\Chain.py" />
-    <Compile Include="core\Method.py">
+    <Compile Include="core\Time.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="core\UPnP.py">
+    <Compile Include="core\Method.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="core\Error.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="core\UPnP.py" />
     <Compile Include="main.py">
       <SubType>Code</SubType>
     </Compile>

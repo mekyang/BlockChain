@@ -60,6 +60,7 @@ def _transaction():
     print(block)
     block = block.save_as_dic()
     chain.append_block(block)
+    node.broadcast(block)
     print('---FINISH---')
 
 def _queryheight():
@@ -68,18 +69,21 @@ def _queryheight():
 
 def _queryblock():
 
-    block_ID = input('Q:')
-    blocks = eval(f'chain.block_chain[{block_ID}]')
-    if isinstance(blocks, dict):
-        blocks = [blocks]
-    for block in blocks:
-        print(block_inf.format(block['block version'],
-                               block['block ID'],
-                               block['time'],
-                               block['previous hash'],
-                               block['block data'],
-                               block['hash'],
-                               block['nonce']))
+    try:
+        block_ID = input('Q:')
+        blocks = eval(f'chain.block_chain[{block_ID}]')
+        if isinstance(blocks, dict):
+            blocks = [blocks]
+        for block in blocks:
+            print(block_inf.format(block['block version'],
+                                   block['block ID'],
+                                   block['time'],
+                                   block['previous hash'],
+                                   block['block data'],
+                                   block['hash'],
+                                   block['nonce']))
+    except:
+        print('具有查询ID的区块还未产生')
 
 def _quit():
 
@@ -98,6 +102,18 @@ def _verification():
     except Exception as e:
         print(e)
 
+def _debug():
+
+    while True:
+        debug = input('D:')
+        if debug == 'quit':
+            break
+        try:
+            eval(debug)
+        except:
+            print('Error')
+            continue
+
 #命令集，用以快速执行命令
 instrucion_set = {
     'tran'   : _transaction,
@@ -105,5 +121,6 @@ instrucion_set = {
     'help'   : _help,
     'height' : _queryheight,
     'query'  : _queryblock,
-    'verf'   : _verification
+    'verf'   : _verification,
+    'debug'  : _debug
     }
