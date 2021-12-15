@@ -36,15 +36,14 @@ class UPnP(object):
             def run(port):
                 try:
                     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-                    s.connect(('192.168.1.111', port))
-                    self.send(f'ALIVE:{self.host_ip};')
+                    s.connect((self.host_ip, port))
+                    s.send(f'ALIVE:{self.host_ip};'.encode())
                     self.node_list.append(port)
-                except:
-                    pass
+                except Exception as e:
+                    print(e)
                 finally:
                     s.close()
-        
-        thread_list.append(threading.Thread(target=run, args=(port,)))
+            thread_list.append(threading.Thread(target=run, args=(port,)))
         for thread in thread_list:
             thread.start()
         for thread in thread_list:

@@ -52,7 +52,7 @@ def set_config():
                 chain_path = config['select']['address']
                 chain_file = chain_path + config['select']['chain_file']
                 node_file = chain_path + config['select']['node_file']
-                if 'address' in command:
+                if 'file' in command:
                     print('正在生成数据容器......')
                     f = open(chain_file, 'wb')
                     f.close()
@@ -94,7 +94,7 @@ while True:
     elif command == 'start':
         start(chain_path, chain_file, node_file, version)
 
-        port = int(input(":"))
+        port = int(input(':'))
         listen_thread = threading.Thread(target=listen, args=(port,))
         main_thread   = threading.Thread(target=main)
         listen_thread.start()

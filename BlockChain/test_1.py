@@ -1,8 +1,5 @@
-import unittest
-
-class Test_test_1(unittest.TestCase):
-    def test_A(self):
-        self.fail("Not implemented")
-
-if __name__ == '__main__':
-    unittest.main()
+import socket
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+s.connect(('192.168.1.114', 2000))
+#self.send(b'ALIVE:{};'.format(self.host_ip))
+#self.node_list.append(port)
