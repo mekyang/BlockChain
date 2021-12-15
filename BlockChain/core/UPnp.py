@@ -39,8 +39,8 @@ class UPnP(object):
                     s.connect((self.host_ip, port))
                     s.send(f'ALIVE:{self.host_ip};'.encode())
                     self.node_list.append(port)
-                except Exception as e:
-                    print(e)
+                except:
+                    pass
                 finally:
                     s.close()
             thread_list.append(threading.Thread(target=run, args=(port,)))
