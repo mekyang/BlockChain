@@ -92,6 +92,9 @@ while True:
 
     #加载
     elif command == 'start':
+        #################################################
+        chain_file = input(':')
+        chain_file = f'D:/{chain_file}.bc'
         start(chain_path, chain_file, node_file, version)
 
         port = int(input(':'))

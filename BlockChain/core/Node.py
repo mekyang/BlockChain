@@ -4,7 +4,7 @@ from os.path import getsize
 from core.Error import *
 import socket
 from core.Method import *
-from core.Chain import Chain
+from core.Chain import *
 
 class Node(object):
 
@@ -57,49 +57,57 @@ class Node(object):
         serve.listen(5)
 
         while True:
-            cs,addr = serve.accept()      
+            cs,addr = serve.accept()  
             self.node_list.append(addr[1])
             buffer = []
             while True:
                 data = cs.recv(1024)
-                buffer.append(data)
+                buffer.append(data.decode())
                 if not data:
                     break
-            data = b''.join(buffer)
+            data = ''.join(buffer)
+            #防止data为
             if not data:
                 continue
-
-            res = util_method(data.decode())
+            res = util_method(data)
             eval(f'self.method_{res[0]}({res[1]}, {res[2]})'.encode())
 
     def send_inf(self, data):
 
-        for s in self.node_list:
+        for node in self.node_list:
             try:
-                s.send(b'{}'.format(data))
+                s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                s.connect(('192.168.1.114', node))
+                s.send(('{}'.format(data)).encode())
             finally:
                 s.close()
 
     def broadcast(self, block):
         #向网络广播信息
-        self.send_inf(f"MINE:{block['block ID']};BLOCK:{block}".encode())
+        self.send_inf(f"MINE-{block['block ID']};BLOCK-{block}")
 
     def get_chain_from_other(self):
         #从其他节点上获取链
-        self.send_inf(f'GETNODE:get;'.encode())
+        self.send_inf(f'GETNODE-get;')
 
     def method_ALIVE(self, value, body):
-        self.node_list.append(value)
+        #self.node_list.append(value)
+        pass
 
     def method_GETNODE(self, value, body):
         #body为get则为其他节点请求，为post则为自己向节点发送请求收到的回应
         if value == 'get':
-            self.send_inf(f'GETNODE:post;CHAIN:{self.block_chain}'.encode())
+            self.send_inf(f'GETNODE-post;CHAIN-{self.block_chain}')
         elif value == 'post':
-            if Chain.verification(self.block_chain):
+            if verification(self.block_chain):
                 self.block_chain = body['CHAIN']
 
     def method_MINE(self, value, body):
         #加入新区块
         if value == self.block_chain[-1]['block ID'] + 1:
-            self.block_chain.append(body['BLOCK'])
+            self.block_chain.append(eval(body['BLOCK']))
+            if verification(self.block_chain, node_call=1):
+                print('新区块已经被挖出\n>')
+
+            else:
+                del self.block_chain[-1]

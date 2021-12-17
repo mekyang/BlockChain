@@ -98,7 +98,7 @@ def _quit():
 def _verification():
 
     try:
-        chain.verification()
+        verification(chain.block_chain)
     except Exception as e:
         print(e)
 

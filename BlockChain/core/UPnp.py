@@ -37,9 +37,9 @@ class UPnP(object):
                 try:
                     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                     s.connect((self.host_ip, port))
-                    s.send(f'ALIVE:{self.host_ip};'.encode())
+                    s.send(f'ALIVE-"{self.host_ip}";'.encode())
                     self.node_list.append(port)
-                except:
+                except Exception as e:
                     pass
                 finally:
                     s.close()
