@@ -60,7 +60,10 @@ def _transaction():
     print(block)
     block = block.save_as_dic()
     chain.append_block(block)
-    node.broadcast(block)
+    try:
+        node.broadcast(block)
+    except:
+        pass
     print('---FINISH---')
 
 def _queryheight():

@@ -17,6 +17,3 @@ def util_method(data):
 
     except:
         raise CanNotUtilError(data)
-
-def a():
-    pass

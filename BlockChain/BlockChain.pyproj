@@ -27,6 +27,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="core\Chain.py" />
+    <Compile Include="core\Tran.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="core\Time.py">
       <SubType>Code</SubType>
     </Compile>
