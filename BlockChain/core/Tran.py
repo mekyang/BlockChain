@@ -9,5 +9,6 @@ class Tran(object):
     def send_transaction(self):
         pass
 
+    PASS
 
 
