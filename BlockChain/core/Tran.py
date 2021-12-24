@@ -10,5 +10,3 @@ class Tran(object):
         pass
 
     pass
-
-pass
